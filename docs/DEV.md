@@ -139,6 +139,93 @@ kitchen-rush/
 
 ---
 
+## Your first contribution (10-line PR walkthrough)
+
+Three concrete starter changes — each touches one file, takes <15 minutes, and gives you the muscle memory for the project's loop. Pick whichever sounds fun.
+
+### Option A — Add a new coaching phrase
+
+The radial coaching modal has 6 preset phrases. Add a 7th.
+
+```bash
+git clone https://github.com/srashed3gatech/kitchen-rush-game.git
+cd kitchen-rush-game
+./run.zsh dev
+# → leave it running, open http://localhost:5173 in your browser
+```
+
+Now in another terminal:
+
+1. Add the phrase to the union in `packages/shared/src/domain.ts`:
+   ```ts
+   export type PresetKey = 'praise' | 'take_time' | 'try_again' | 'watch_heat'
+     | 'check_ticket' | 'cleanup_when_can' | 'good_eye';   // ← your new one
+   ```
+2. Pick mood/XP deltas in `apps/server/src/routes/workers.ts`:
+   ```ts
+   const PRESET_DELTAS: Record<PresetKey, ...> = {
+     // ...existing...
+     good_eye: { xp: 3, mood: 2 },
+   };
+   const COOLDOWNS_MS: Record<PresetKey, number> = {
+     // ...existing...
+     good_eye: 10_000,
+   };
+   ```
+3. Add the UI button in `apps/web/src/ui/CoachingModal.tsx` (the `PRESETS` array near the top — copy an existing entry):
+   ```ts
+   { key: 'good_eye', label: 'Good eye! 👁️', summary: 'Noticing detail',
+     cooldownMs: 10_000, emoji: '👁️' },
+   ```
+4. Add the in-canvas speech-bubble response in `apps/web/src/canvas/render/drawWorkers.ts`:
+   ```ts
+   const PRESET_BUBBLE_TEXT: Record<string, string> = {
+     // ...
+     good_eye: 'Thanks chef! 👀',
+   };
+   ```
+
+Click on a worker in the running browser → your new button shows up → tap it → audio fires → bubble appears → mood ticks up. `npm run typecheck` → clean. Commit, push, PR.
+
+### Option B — Add a persona-flavored review quote
+
+Each customer persona has a phrase bank. Add a new one.
+
+Open `apps/server/src/ai/reviewTemplates.ts`. Find the `night_owl` persona's `happy` array and append a quote:
+
+```ts
+night_owl: {
+  happy: [
+    'Late-night {item} fix, exactly what I needed 🦉',
+    // ...
+    'Quiet booth, hot {item}, perfect study fuel 📚',  // ← your new line
+  ],
+  // ...
+}
+```
+
+The `{item}` is replaced with the recipe name at runtime. No code wiring needed — the next time a night_owl orders, your line might surface.
+
+Smoke-test by hitting `/api/dev/advance-days` to fast-forward, then check `/api/reviews?limit=20`. PR.
+
+### Option C — Tweak game balance
+
+Open `apps/server/src/sim/workers.ts`:
+
+```ts
+const MOOD_DECAY_PER_HOUR_COOKING: Record<1 | 2 | 3 | 4 | 5, number> = {
+  1: -1.2,
+  2: -0.8,
+  // ...
+};
+```
+
+These numbers are mood lost per in-game hour while a worker is actively cooking. Bump or soften them. Watch the effect by running a full in-game day (`./run.zsh dev`, log in, wait ~5 real minutes, check the workers' `mood` field in `/api/restaurant/state`).
+
+This is the highest-leverage, lowest-LOC kind of change you can make. Open a PR with your before/after numbers and a sentence of why your tuning feels better.
+
+---
+
 ## Running locally
 
 ```bash

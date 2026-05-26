@@ -168,7 +168,18 @@ PRs and issues welcome. The repo is GPLv3 — anything you build on top of this 
 Before opening a PR:
 - `npm run typecheck` should be clean.
 - For UI changes, smoke-test on iPhone Safari (~390px viewport) and iPad (~810px).
-- Read [docs/DEV.md](./docs/DEV.md) for the file-by-file map.
+- Read [docs/DEV.md](./docs/DEV.md) for the file-by-file map and a **"Your first contribution" walkthrough** with three concrete 10-line starter changes.
+
+### Using Claude Code
+
+This repo is **Claude-Code-aware**. If you're using [Claude Code](https://claude.ai/code), `git clone` is enough — Claude picks up:
+
+- **`CLAUDE.md`** at the root — 5-minute project loadout (invariants, common gotchas, where to start by intent) so Claude doesn't burn tokens re-deriving the architecture.
+- **`.claude/agents/game-designer.md`** — a project-specific subagent that already knows the cozy-genre contract (no fail-states, no timers, kid-friendly tuning). Spawn it via `Agent({ subagent_type: 'game-designer', ... })`.
+- **`.claude/launch.json`** — preview-server config so Claude Code's screenshot/preview tools work against `./run.zsh dev` out of the box.
+- **`.claude/settings.json`** — a project-shared allowlist for common safe commands (`./run.zsh:*`, `npm run *`, `git status`, etc.) so you don't get permission popups for every operation.
+
+Open the project in Claude Code and ask *"help me add a new coaching phrase"* — it should hit the ground running.
 
 ---
 
