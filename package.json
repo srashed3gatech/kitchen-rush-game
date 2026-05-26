@@ -1,0 +1,27 @@
+{
+  "name": "kitchen-rush",
+  "version": "0.1.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently -n server,web -c blue,magenta \"npm:dev:server\" \"npm:dev:web\"",
+    "dev:server": "npm --workspace apps/server run dev",
+    "dev:web": "npm --workspace apps/web run dev",
+    "build": "npm --workspace @kitchen-rush/shared run build && npm --workspace apps/server run build && npm --workspace apps/web run build",
+    "build:shared": "npm --workspace @kitchen-rush/shared run build",
+    "start": "NODE_ENV=production node apps/server/dist/index.js",
+    "typecheck": "tsc -b apps/server apps/web packages/shared",
+    "seed": "npm --workspace apps/server run seed",
+    "reset": "rm -f apps/server/data/kitchen-rush.sqlite && npm run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0",
+    "typescript": "^5.5.0"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

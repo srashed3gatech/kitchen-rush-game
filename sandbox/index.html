@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🍳 Kitchen Rush</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ── MENU SCREEN ── -->
+  <div id="menuScreen" class="screen">
+    <div class="menu-logo">🍳</div>
+    <h1 class="menu-title">Kitchen Rush</h1>
+    <p class="menu-sub">Rush around the kitchen to serve every order!</p>
+
+    <div class="controls-card">
+      <div class="controls-title">How to Play</div>
+      <div class="controls-grid">
+        <span class="key">WASD</span><span>Move chef</span>
+        <span class="key">E / Space</span><span>Interact with station</span>
+      </div>
+      <div class="controls-note">
+        Grab ingredients → Process → Assemble → Serve!
+      </div>
+    </div>
+
+    <div class="recipe-hint">
+      <div class="recipe-row"><span>🥗</span><span>Salad = ✂️🥬 + ✂️🍅</span></div>
+      <div class="recipe-row"><span>🍔</span><span>Burger = 🔥🥩 + ✂️🥬 + 🍞</span></div>
+      <div class="recipe-row"><span>🫓</span><span>Grilled Cheese = 🔥🧀 + 🍞</span></div>
+      <div class="recipe-row"><span>🍕</span><span>Pizza = 🔥🥩 + ✂️🍅 + 🔥🧀</span></div>
+    </div>
+
+    <button id="startBtn" class="btn-primary">Start Cooking! 🧑‍🍳</button>
+  </div>
+
+  <!-- ── GAME SCREEN ── -->
+  <div id="gameScreen" class="screen hidden">
+    <div id="hud">
+      <div id="scoreBox">⭐ <span id="score">0</span></div>
+      <div id="timerBox">⏱ <span id="timer">3:00</span></div>
+    </div>
+
+    <div id="ordersPanel">
+      <div id="ordersLabel">📋 ORDERS</div>
+      <div id="ordersList"></div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <div id="heldBar">
+      <span id="heldLabel">Holding:</span>
+      <span id="heldItemDisplay">— nothing —</span>
+    </div>
+  </div>
+
+  <!-- ── GAME OVER SCREEN ── -->
+  <div id="gameOverScreen" class="screen hidden">
+    <div class="go-icon">🍽️</div>
+    <h1 class="go-title">Time's Up!</h1>
+    <div class="go-score-label">Your Score</div>
+    <div class="go-score"><span id="finalScore">0</span></div>
+    <div id="finalRating" class="go-rating"></div>
+    <button id="restartBtn" class="btn-primary">Play Again 🔄</button>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>
